@@ -1,6 +1,6 @@
 import { Stage } from "@pixi/react";
 import Player from "./Player";
-import { createContext, Dispatch, FC, useReducer } from "react";
+import { createContext, Dispatch, useReducer } from "react";
 
 type ActionMap<M extends { [index: string]: any }> = {
   [Key in keyof M]: M[Key] extends undefined
