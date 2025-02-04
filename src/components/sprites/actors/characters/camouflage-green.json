@@ -1,0 +1,62 @@
+{
+  "frames": {
+    "walkDown1": {
+      "frame": { "x": 0, "y": 0, "w": 16, "h": 16 }
+    },
+    "walkDown2": {
+      "frame": { "x": 0, "y": 17, "w": 16, "h": 16 }
+    },
+    "walkDown3": {
+      "frame": { "x": 0, "y": 33, "w": 16, "h": 16 }
+    },
+    "walkDown4": {
+      "frame": { "x": 0, "y": 49, "w": 16, "h": 16 }
+    },
+    "walkUp1": {
+      "frame": { "x": 17, "y": 0, "w": 16, "h": 16 }
+    },
+    "walkUp2": {
+      "frame": { "x": 17, "y": 17, "w": 16, "h": 16 }
+    },
+    "walkUp3": {
+      "frame": { "x": 17, "y": 33, "w": 16, "h": 16 }
+    },
+    "walkUp4": {
+      "frame": { "x": 17, "y": 49, "w": 16, "h": 16 }
+    },
+    "walkLeft1": {
+      "frame": { "x": 33, "y": 0, "w": 16, "h": 16 }
+    },
+    "walkLeft2": {
+      "frame": { "x": 33, "y": 17, "w": 16, "h": 16 }
+    },
+    "walkLeft3": {
+      "frame": { "x": 33, "y": 33, "w": 16, "h": 16 }
+    },
+    "walkLeft4": {
+      "frame": { "x": 33, "y": 49, "w": 16, "h": 16 }
+    },
+    "walkRight1": {
+      "frame": { "x": 49, "y": 0, "w": 15, "h": 15 }
+    },
+    "walkRight2": {
+      "frame": { "x": 49, "y": 17, "w": 15, "h": 15 }
+    },
+    "walkRight3": {
+      "frame": { "x": 49, "y": 33, "w": 15, "h": 15 }
+    },
+    "walkRight4": {
+      "frame": { "x": 49, "y": 49, "w": 15, "h": 15 }
+    }
+  },
+  "animations": {
+    "walkDown": ["walkDown1", "walkDown2", "walkDown3", "walkDown4"],
+    "walkUp": ["walkUp1", "walkUp2", "walkUp3", "walkUp4"],
+    "walkLeft": ["walkLeft1", "walkLeft2", "walkLeft3", "walkLeft4"],
+    "walkRight": ["walkRight1", "walkRight2", "walkRight3", "walkRight4"]
+  },
+  "meta": {
+    "image": "/assets/ninja-adventure/actor/characters/camouflage-green/spritesheet.png",
+    "scale": "1"
+  }
+}
