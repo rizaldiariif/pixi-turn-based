@@ -1,37 +1,8 @@
 import { useCallback, useContext } from "react";
 import { BattleContext, Types } from "../contexts/battle";
-import {
-  Assets,
-  Resource,
-  Spritesheet,
-  SpriteSheetJson,
-  Texture,
-} from "pixi.js";
+import { Assets, Resource, Spritesheet, Texture } from "pixi.js";
 import { Sound } from "@pixi/sound";
-
-const slashSpriteJSON: SpriteSheetJson = {
-  frames: {
-    frame1: {
-      frame: { x: 0, y: 0, w: 32, h: 32 },
-    },
-    frame2: {
-      frame: { x: 33, y: 0, w: 32, h: 32 },
-    },
-    frame3: {
-      frame: { x: 65, y: 0, w: 32, h: 32 },
-    },
-    frame4: {
-      frame: { x: 97, y: 0, w: 31, h: 31 },
-    },
-  },
-  animations: {
-    slash: ["frame1", "frame2", "frame3", "frame4"],
-  },
-  meta: {
-    image: "/assets/ninja-adventure/fx/slash/spritesheet.png",
-    scale: "1",
-  },
-};
+import spritesheetSlash from "../components/sprites/fx/slash/slash.json";
 
 export const useFX = () => {
   const { dispatch } = useContext(BattleContext);
@@ -72,7 +43,7 @@ export const useFX = () => {
       const textureSlash = await Assets.load(
         "/assets/ninja-adventure/fx/slash/slash/spritesheet.png"
       );
-      const sheetSlash = new Spritesheet(textureSlash, slashSpriteJSON);
+      const sheetSlash = new Spritesheet(textureSlash, spritesheetSlash);
       await sheetSlash.parse();
 
       const sound = Sound.from({

@@ -12,6 +12,7 @@
   "dependencies": {
     "@pixi/react": "^7.1.2",
     "@pixi/sound": "^5.2.3",
+    "@pixi/tilemap": "^4.1.0",
     "@tailwindcss/vite": "^4.0.1",
     "pixi.js": "^7.4.2",
     "react": "^18.3.1",

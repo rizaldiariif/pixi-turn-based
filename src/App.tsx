@@ -4,11 +4,14 @@ import { BattleContext, BattleProvider } from "./contexts/battle";
 import FX from "./components/fx/FX";
 import { useContext } from "react";
 import BattleTile from "./components/system/BattleTile";
+import Ground from "./components/system/Ground";
 
 const App = () => {
   return (
     <Stage width={800} height={600} options={{ background: 0x1099bb }}>
       <BattleProvider>
+        <Ground />
+
         {/* Battle Tile */}
         <BattleTile />
 
