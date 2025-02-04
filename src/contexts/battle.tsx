@@ -148,6 +148,14 @@ interface StateType {
     textures: Texture<Resource>[];
     sound?: Sound;
   };
+  mapObjects: {
+    id: string;
+    collision: boolean;
+    size: number;
+    x: number;
+    y: number;
+    type: "tree-single" | "tree-multiple";
+  }[];
 }
 
 const initialState: StateType = {
@@ -171,6 +179,24 @@ const initialState: StateType = {
     },
   },
   effect: undefined,
+  mapObjects: [
+    {
+      id: "tree-1",
+      collision: true,
+      x: 16 * 18,
+      y: 16 * 14,
+      size: 32,
+      type: "tree-single",
+    },
+    {
+      id: "tree-2",
+      collision: true,
+      x: 16 * 24,
+      y: 16 * 16,
+      size: 32,
+      type: "tree-single",
+    },
+  ],
 };
 
 export const BattleContext = createContext<{

@@ -5,12 +5,27 @@ import FX from "./components/fx/FX";
 import { useContext } from "react";
 import BattleTile from "./components/system/BattleTile";
 import Ground from "./components/system/Ground";
+import TreeSingle from "./components/system/TreeSingle";
 
 const App = () => {
   return (
     <Stage width={800} height={600} options={{ background: 0x1099bb }}>
       <BattleProvider>
         <Ground />
+        {(() => {
+          const { state } = useContext(BattleContext);
+
+          return state.mapObjects.map((o) => {
+            switch (o.type) {
+              case "tree-single":
+                return <TreeSingle id={o.id} x={o.x} y={o.y} size={o.size} />;
+              case "tree-multiple":
+                return <TreeSingle id={o.id} x={o.x} y={o.y} size={o.size} />;
+              default:
+                return null;
+            }
+          });
+        })()}
 
         {/* Battle Tile */}
         <BattleTile />

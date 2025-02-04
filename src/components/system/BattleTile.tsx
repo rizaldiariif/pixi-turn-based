@@ -62,10 +62,26 @@ const BattleTile = (_props: Props) => {
   }, [x, y]);
   const bounded = useMemo(() => {
     const bound: {
-      top?: string;
-      right?: string;
-      bottom?: string;
-      left?: string;
+      top?: {
+        target_id: string;
+        type: "player" | "object";
+        collision: boolean;
+      };
+      right?: {
+        target_id: string;
+        type: "player" | "object";
+        collision: boolean;
+      };
+      bottom?: {
+        target_id: string;
+        type: "player" | "object";
+        collision: boolean;
+      };
+      left?: {
+        target_id: string;
+        type: "player" | "object";
+        collision: boolean;
+      };
     } = {};
 
     const otherPlayers = Object.values(state.player_stats).filter(
@@ -77,16 +93,74 @@ const BattleTile = (_props: Props) => {
         if (r.intersects(opRectangle)) {
           switch (i) {
             case 0:
-              bound.top = op.id;
+              bound.top = {
+                target_id: op.id,
+                type: "player",
+                collision: true,
+              };
               break;
             case 1:
-              bound.right = op.id;
+              bound.right = {
+                target_id: op.id,
+                type: "player",
+                collision: true,
+              };
               break;
             case 2:
-              bound.bottom = op.id;
+              bound.bottom = {
+                target_id: op.id,
+                type: "player",
+                collision: true,
+              };
               break;
             case 3:
-              bound.left = op.id;
+              bound.left = {
+                target_id: op.id,
+                type: "player",
+                collision: true,
+              };
+              break;
+            default:
+              break;
+          }
+        }
+      });
+      state.mapObjects.forEach((o) => {
+        const opRectangle = new Rectangle(
+          o.x - o.size / 2,
+          o.y,
+          o.size,
+          o.size / 2
+        );
+        if (r.intersects(opRectangle)) {
+          switch (i) {
+            case 0:
+              bound.top = {
+                target_id: o.id,
+                type: "object",
+                collision: o.collision,
+              };
+              break;
+            case 1:
+              bound.right = {
+                target_id: o.id,
+                type: "object",
+                collision: o.collision,
+              };
+              break;
+            case 2:
+              bound.bottom = {
+                target_id: o.id,
+                type: "object",
+                collision: o.collision,
+              };
+              break;
+            case 3:
+              bound.left = {
+                target_id: o.id,
+                type: "object",
+                collision: o.collision,
+              };
               break;
             default:
               break;
@@ -95,7 +169,7 @@ const BattleTile = (_props: Props) => {
       });
     });
     return bound;
-  }, [id, x, y, state.player_stats, tileRectangles]);
+  }, [id, x, y, state.player_stats, tileRectangles, state.mapObjects]);
   const active = state?.turn[0] === id;
   const handleMove = useCallback(
     (toX: number, toY: number) => () => {
@@ -120,40 +194,62 @@ const BattleTile = (_props: Props) => {
   return (
     <>
       <Tile
-        active={active}
+        active={
+          active &&
+          (bounded.top === undefined || bounded?.top.type === "player")
+        }
         activeColor={bounded.top ? 0xe74c3c : 0x8e44ad}
         baseColor={0x58d68d}
         x={x}
         y={y - 16}
-        onClick={bounded.top ? handleHit(bounded.top) : handleMove(x, y - 16)}
+        onClick={
+          bounded.top ? handleHit(bounded.top.target_id) : handleMove(x, y - 16)
+        }
       />
       <Tile
-        active={active}
+        active={
+          active &&
+          (bounded.right === undefined || bounded?.right.type === "player")
+        }
         activeColor={bounded.right ? 0xe74c3c : 0x8e44ad}
         baseColor={0x58d68d}
         x={x + 16}
         y={y}
         onClick={
-          bounded.right ? handleHit(bounded.right) : handleMove(x + 16, y)
+          bounded.right
+            ? handleHit(bounded.right.target_id)
+            : handleMove(x + 16, y)
         }
       />
       <Tile
-        active={active}
+        active={
+          active &&
+          (bounded.bottom === undefined || bounded?.bottom.type === "player")
+        }
         activeColor={bounded.bottom ? 0xe74c3c : 0x8e44ad}
         baseColor={0x58d68d}
         x={x}
         y={y + 16}
         onClick={
-          bounded.bottom ? handleHit(bounded.bottom) : handleMove(x, y + 16)
+          bounded.bottom
+            ? handleHit(bounded.bottom.target_id)
+            : handleMove(x, y + 16)
         }
       />
       <Tile
-        active={active}
+        active={
+          active &&
+          (bounded.left === undefined || bounded?.left.type === "player")
+        }
         activeColor={bounded.left ? 0xe74c3c : 0x8e44ad}
         baseColor={0x58d68d}
         x={x - 16}
         y={y}
-        onClick={bounded.left ? handleHit(bounded.left) : handleMove(x - 16, y)}
+        onClick={
+          bounded.left && bounded.left.type === "player"
+            ? handleHit(bounded.left.target_id)
+            : handleMove(x - 16, y)
+        }
       />
     </>
   );
