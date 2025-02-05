@@ -2,9 +2,14 @@ import { AnimatedSprite } from "@pixi/react";
 import { useContext } from "react";
 import { BattleContext, Types } from "../../contexts/battle";
 
-type Props = {};
+type Props = {
+  size: number;
+};
 
-const FX = (_props: Props) => {
+const defaultSpriteSize = 16;
+
+const FX = (props: Props) => {
+  const { size: s = defaultSpriteSize } = props;
   const {
     state: { effect },
     dispatch,
@@ -23,8 +28,8 @@ const FX = (_props: Props) => {
       animationSpeed={0.15}
       textures={effect?.textures}
       renderable={effect?.playing || false}
-      width={16}
-      height={16}
+      width={s}
+      height={s}
       loop={false}
       onComplete={() => {
         dispatch({ type: Types.EFFECT_STOP, payload: null });

@@ -1,17 +1,38 @@
-import { Stage } from "@pixi/react";
-import Player from "./components/actors/Player";
-import { BattleContext, BattleProvider } from "./contexts/battle";
-import FX from "./components/fx/FX";
 import { useContext } from "react";
+import { Stage } from "@pixi/react";
+
+import { BattleContext, BattleProvider } from "./contexts/battle";
+
+import Player from "./components/actors/Player";
+
+import FX from "./components/fx/FX";
+
 import BattleTile from "./components/system/BattleTile";
-import Ground from "./components/system/Ground";
+import Field from "./components/system/Field";
 import TreeSingle from "./components/system/TreeSingle";
+import Floor from "./components/system/Floor";
+
+const gameTileSize = 64;
 
 const App = () => {
   return (
-    <Stage width={800} height={600} options={{ background: 0x1099bb }}>
+    <Stage
+      width={gameTileSize * 24}
+      height={gameTileSize * 18}
+      options={{
+        background: 0x1099bb,
+      }}
+    >
       <BattleProvider>
-        <Ground />
+        <Field x={0} y={0} width={23} height={17} tileSize={gameTileSize} />
+        <Floor
+          x={gameTileSize * 6}
+          y={gameTileSize * 3}
+          width={10}
+          height={10}
+          tileSize={gameTileSize}
+        />
+
         {(() => {
           const { state } = useContext(BattleContext);
 
@@ -28,18 +49,24 @@ const App = () => {
         })()}
 
         {/* Battle Tile */}
-        <BattleTile />
+        <BattleTile size={gameTileSize} />
 
         {/* Render Players */}
         {(() => {
           const { state } = useContext(BattleContext);
           return Object.values(state.player_stats).map((p) => (
-            <Player key={p.id} id={p.id} type={p.type} health={p.health} />
+            <Player
+              key={p.id}
+              id={p.id}
+              type={p.type}
+              health={p.health}
+              size={gameTileSize}
+            />
           ));
         })()}
 
         {/* Render top layers (FX, GUI, etc.) */}
-        <FX />
+        <FX size={gameTileSize} />
       </BattleProvider>
     </Stage>
   );

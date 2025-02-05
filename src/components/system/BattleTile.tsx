@@ -4,11 +4,14 @@ import { Graphics } from "@pixi/react";
 import { Rectangle } from "pixi.js";
 import { useFX } from "../../hooks/useFx";
 
-type Props = {};
+type Props = {
+  size: number;
+};
 
 type TileProps = {
   x: number;
   y: number;
+  size: number;
   baseColor: number;
   activeColor: number;
   active: boolean;
@@ -16,7 +19,7 @@ type TileProps = {
 };
 
 const Tile = (tileProps: TileProps) => {
-  const { baseColor, activeColor, x, y, active, onClick } = tileProps;
+  const { baseColor, activeColor, x, y, active, onClick, size: s } = tileProps;
 
   const [tileHovered, setTileHovered] = useState(false);
   const [alpha, setAlpha] = useState(0.6);
@@ -26,7 +29,7 @@ const Tile = (tileProps: TileProps) => {
       draw={(g) => {
         g.clear();
         g.beginFill(tileHovered ? activeColor : baseColor, 1);
-        g.drawRect(x, y, 16, 16);
+        g.drawRect(x, y, s, s);
         g.endFill();
       }}
       interactive={true}
@@ -45,7 +48,9 @@ const Tile = (tileProps: TileProps) => {
   );
 };
 
-const BattleTile = (_props: Props) => {
+const BattleTile = (props: Props) => {
+  const { size: s } = props;
+
   const { state, dispatch } = useContext(BattleContext);
   const { effectHit } = useFX();
 
@@ -54,10 +59,10 @@ const BattleTile = (_props: Props) => {
 
   const tileRectangles = useMemo(() => {
     const rects = [];
-    rects.push(new Rectangle(x, y - 16, 16, 16));
-    rects.push(new Rectangle(x + 16, y, 16, 16));
-    rects.push(new Rectangle(x, y + 16, 16, 16));
-    rects.push(new Rectangle(x - 16, y, 16, 16));
+    rects.push(new Rectangle(x, y - s, s, s));
+    rects.push(new Rectangle(x + s, y, s, s));
+    rects.push(new Rectangle(x, y + s, s, s));
+    rects.push(new Rectangle(x - s, y, s, s));
     return rects;
   }, [x, y]);
   const bounded = useMemo(() => {
@@ -89,7 +94,7 @@ const BattleTile = (_props: Props) => {
     );
     tileRectangles.forEach((r, i) => {
       otherPlayers.forEach((op) => {
-        const opRectangle = new Rectangle(op.x, op.y, 16, 16);
+        const opRectangle = new Rectangle(op.x, op.y, s, s);
         if (r.intersects(opRectangle)) {
           switch (i) {
             case 0:
@@ -169,7 +174,7 @@ const BattleTile = (_props: Props) => {
       });
     });
     return bound;
-  }, [id, x, y, state.player_stats, tileRectangles, state.mapObjects]);
+  }, [id, x, y, state.player_stats, tileRectangles, state.mapObjects, s]);
   const active = state?.turn[0] === id;
   const handleMove = useCallback(
     (toX: number, toY: number) => () => {
@@ -201,10 +206,11 @@ const BattleTile = (_props: Props) => {
         activeColor={bounded.top ? 0xe74c3c : 0x8e44ad}
         baseColor={0x58d68d}
         x={x}
-        y={y - 16}
+        y={y - s}
         onClick={
-          bounded.top ? handleHit(bounded.top.target_id) : handleMove(x, y - 16)
+          bounded.top ? handleHit(bounded.top.target_id) : handleMove(x, y - s)
         }
+        size={s}
       />
       <Tile
         active={
@@ -213,13 +219,14 @@ const BattleTile = (_props: Props) => {
         }
         activeColor={bounded.right ? 0xe74c3c : 0x8e44ad}
         baseColor={0x58d68d}
-        x={x + 16}
+        x={x + s}
         y={y}
         onClick={
           bounded.right
             ? handleHit(bounded.right.target_id)
-            : handleMove(x + 16, y)
+            : handleMove(x + s, y)
         }
+        size={s}
       />
       <Tile
         active={
@@ -229,12 +236,13 @@ const BattleTile = (_props: Props) => {
         activeColor={bounded.bottom ? 0xe74c3c : 0x8e44ad}
         baseColor={0x58d68d}
         x={x}
-        y={y + 16}
+        y={y + s}
         onClick={
           bounded.bottom
             ? handleHit(bounded.bottom.target_id)
-            : handleMove(x, y + 16)
+            : handleMove(x, y + s)
         }
+        size={s}
       />
       <Tile
         active={
@@ -243,13 +251,14 @@ const BattleTile = (_props: Props) => {
         }
         activeColor={bounded.left ? 0xe74c3c : 0x8e44ad}
         baseColor={0x58d68d}
-        x={x - 16}
+        x={x - s}
         y={y}
         onClick={
           bounded.left && bounded.left.type === "player"
             ? handleHit(bounded.left.target_id)
-            : handleMove(x - 16, y)
+            : handleMove(x - s, y)
         }
+        size={s}
       />
     </>
   );

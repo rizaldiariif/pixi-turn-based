@@ -16,6 +16,7 @@ type Props = {
   id: string;
   type: "boy" | "camouflage-green";
   health: number;
+  size: number;
 };
 
 type Animations = Record<
@@ -23,7 +24,10 @@ type Animations = Record<
   Texture[]
 >;
 
+const defaultSpriteSize = 16;
+
 const Player = (props: Props) => {
+  const { size: s = defaultSpriteSize } = props;
   const { state, dispatch } = useContext(BattleContext);
 
   // handle sprite groupings
@@ -47,7 +51,10 @@ const Player = (props: Props) => {
             sprite = spritesheetBoy;
             break;
         }
-        const sheet = new Spritesheet(texture, sprite);
+        const sheet = new Spritesheet(texture, {
+          ...sprite,
+          meta: { ...sprite.meta, scale: `${defaultSpriteSize / s}` },
+        });
         await sheet.parse();
         setAnimations(sheet.animations);
 
@@ -80,9 +87,9 @@ const Player = (props: Props) => {
       <Text
         text={`${state.player_stats[props.id].health}`}
         anchor={0.5}
-        x={state.player_stats[props.id].x + 8}
-        y={state.player_stats[props.id].y - 2}
-        style={new TextStyle({ fontSize: 10 })}
+        x={state.player_stats[props.id].x + s / 2}
+        y={state.player_stats[props.id].y - s / 6}
+        style={new TextStyle({ fontSize: s / 2.5 })}
       />
 
       <Container
@@ -90,8 +97,8 @@ const Player = (props: Props) => {
         x={state.player_stats[props.id].x}
         y={state.player_stats[props.id].y}
         anchor={0.5}
-        width={16}
-        height={16}
+        width={s}
+        height={s}
         renderId={Math.ceil(Math.random() * 100)}
         zIndex={1}
         interactive={active}
@@ -109,6 +116,8 @@ const Player = (props: Props) => {
         {Object.entries(animations).map(([animationName, textures]) => (
           <AnimatedSprite
             key={animationName}
+            width={s}
+            height={s}
             isPlaying={active}
             initialFrame={0}
             animationSpeed={0.15}
